@@ -50,21 +50,22 @@
       padding: 2.5rem 1rem;
     }
 
-    /* Loader de Inicialização */
+    /* Loader de Inicialização em Tela Cheia/Centralizado */
     #page-loader {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 50vh;
-      gap: 1rem;
+      min-height: 60vh;
+      gap: 1.2rem;
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 1rem;
+      font-weight: 500;
     }
 
     .spinner {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border: 3px solid var(--border);
       border-top-color: var(--primary);
       border-radius: 50%;
@@ -75,7 +76,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Esconde o container principal até a detecção terminar */
+    /* Garante que o conteúdo NUNCA apareça antes da detecção do IP */
     #main-content {
       display: none;
       max-width: 900px;
@@ -233,14 +234,14 @@
 </head>
 <body>
 
-  <!-- Tela de Carregamento enquanto detecta o IP -->
+  <!-- Spinner visível por padrão enquanto analisa o IP -->
   <div id="page-loader">
     <div class="spinner"></div>
-    <span>Carregando documentação... / Loading...</span>
+    <span id="loader-text">Carregando documentação...</span>
   </div>
 
-  <!-- Container principal (inicia oculto) -->
-  <div class="container" id="main-content">
+  <!-- Container principal bloqueado com style="display: none;" para não vazar tela -->
+  <div class="container" id="main-content" style="display: none;">
     <header>
       <span class="badge" id="main-badge">Documento Oficial</span>
       <h1 id="main-title">Termos &amp; Privacidade</h1>
@@ -500,26 +501,31 @@
   </div>
 
   <script>
-    const i18nHeader = {
+    // Dicionário de títulos e textos do cabeçalho
+    const headerTranslations = {
       pt: {
         badge: "Documento Oficial",
         title: "Termos &amp; Privacidade",
-        date: "Última Atualização: 08/09/2026"
+        date: "Última Atualização: 08/09/2026",
+        docTitle: "Termos de Uso & Política de Privacidade"
       },
       en: {
         badge: "Official Document",
         title: "Terms &amp; Privacy",
-        date: "Last Updated: September 8, 2026"
+        date: "Last Updated: September 8, 2026",
+        docTitle: "Terms of Use & Privacy Policy"
       },
       es: {
         badge: "Documento Oficial",
         title: "Términos y Privacidad",
-        date: "Última Actualización: 08/09/2026"
+        date: "Última Actualización: 08/09/2026",
+        docTitle: "Términos de Uso y Política de Privacidad"
       }
     };
 
-    // Alternância manual de idioma pelos botões e atualização do cabeçalho
+    // Função de alternância manual ou automática
     function switchLang(lang) {
+      // 1. Esconde todos os painéis e desmarca botões
       document.querySelectorAll('.content-panel').forEach(panel => {
         panel.classList.remove('active');
         panel.style.display = 'none';
@@ -528,26 +534,32 @@
         btn.classList.remove('active');
       });
 
+      // 2. Exibe o painel ativo
       const activePanel = document.getElementById('panel-' + lang);
       if (activePanel) {
         activePanel.classList.add('active');
         activePanel.style.display = 'block';
       }
 
+      // 3. Marca o botão selecionado
       const activeBtn = document.querySelector(`.tab-btn[data-lang="${lang}"]`);
       if (activeBtn) {
         activeBtn.classList.add('active');
       }
 
-      // Atualiza textos do cabeçalho de acordo com o idioma selecionado
-      if (i18nHeader[lang]) {
-        document.getElementById('main-badge').innerHTML = i18nHeader[lang].badge;
-        document.getElementById('main-title').innerHTML = i18nHeader[lang].title;
-        document.getElementById('main-date').innerHTML = i18nHeader[lang].date;
-      }
+      // 4. Atualiza o TÍTULO (h1), o BADGE, a DATA e o TÍTULO DA ABA (<title>)
+      const data = headerTranslations[lang] || headerTranslations.en;
+      const elBadge = document.getElementById('main-badge');
+      const elTitle = document.getElementById('main-title');
+      const elDate = document.getElementById('main-date');
+
+      if (elBadge) elBadge.innerHTML = data.badge;
+      if (elTitle) elTitle.innerHTML = data.title;
+      if (elDate) elDate.innerHTML = data.date;
+      document.title = data.docTitle;
     }
 
-    // Esconde o spinner e revela a página
+    // Revela a interface e oculta o spinner
     function revealContent() {
       const loader = document.getElementById('page-loader');
       const content = document.getElementById('main-content');
@@ -560,7 +572,6 @@
       'CU', 'BO', 'DO', 'HN', 'PY', 'SV', 'NI', 'CR', 'PR', 'PA', 'UY', 'GQ'
     ];
 
-    // Detecção secundária baseada no navegador (Fallback)
     function fallbackByBrowser() {
       const langs = navigator.languages ? Array.from(navigator.languages) : [navigator.language || 'en'];
       const primaryLang = (langs[0] || '').toLowerCase();
@@ -570,13 +581,13 @@
       return 'en';
     }
 
-    // Detecção primária baseada na rede (IP/VPN)
+    // Detecção com Prioridade Absoluta para o IP do VPN
     async function detectLanguageAndRegion() {
       let chosenLang = null;
 
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2500); // 2.5s limite para a resposta
+        const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 segundos limite
 
         const res = await fetch('https://ipwho.is/', { signal: controller.signal });
         clearTimeout(timeoutId);
@@ -596,15 +607,15 @@
           }
         }
       } catch (e) {
-        // Ignora erro de rede ou timeout
+        // Ignora erro de rede/timeout
       }
 
-      // Se falhou por qualquer motivo (bloqueador, offline, timeout), vai pro fallback
+      // Se falhar ou demorar mais que 2 segundos, aplica o fallback do navegador
       if (!chosenLang) {
         chosenLang = fallbackByBrowser();
       }
 
-      // Aplica idioma e revela interface
+      // Aplica o idioma (incluindo a tradução do título) e só então revela a página
       switchLang(chosenLang);
       revealContent();
     }
