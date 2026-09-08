@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Termos de Uso & Política de Privacidade</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --badge-bg: #eff6ff;
+      --badge-text: #1d4ed8;
+      --warning-bg: #fef2f2;
+      --warning-border: #fecaca;
+      --warning-text: #991b1b;
+      --radius: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card-bg: #1e293b;
+        --text: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border: #334155;
+        --badge-bg: #1e3a8a;
+        --badge-text: #93c5fd;
+        --warning-bg: #450a0a;
+        --warning-border: #7f1d1d;
+        --warning-text: #fca5a5;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+    }
+
+    .date {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Language Switcher Tabs */
+    .lang-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 0.35rem;
+      border-radius: 9999px;
+      margin: 1.5rem auto;
+      max-width: 380px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+
+    .content-panel {
+      display: none;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .content-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: 1.8rem;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    ul {
+      margin-bottom: 1.25rem;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .alert-card {
+      background-color: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      margin: 1.25rem 0;
+      font-weight: 500;
+    }
+
+    .caps-disclaimer {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      background: var(--bg);
+      border-left: 4px solid var(--border);
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: ui-monospace, monospace;
+      margin: 1rem 0;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">Legal Documentation</span>
+      <h1>Termos &amp; Privacidade</h1>
+      <p class="date">Última Atualização / Last Updated / Última Actualización: 08/09/2026</p>
+    </header>
+
+    <!-- Seletor de Idiomas -->
+    <nav class="lang-tabs" aria-label="Language Selector">
+      <button class="tab-btn active" onclick="switchLang('pt')">Português</button>
+      <button class="tab-btn" onclick="switchLang('en')">English</button>
+      <button class="tab-btn" onclick="switchLang('es')">Español</button>
+    </nav>
+
+    <!-- CONTEÚDO EM PORTUGUÊS -->
+    <article id="panel-pt" class="content-panel active">
+      <h2>1. Operação Local e Offline</h2>
+      <p>Este aplicativo é uma ferramenta técnica desenvolvida para desenho, edição de mídia (fotos, vídeos e GIFs) e criação de pacotes de figurinhas (stickers)[cite: 1].</p>
+      <ul>
+        <li><strong>Processamento 100% no Aparelho:</strong> Todo o processamento, recorte e renderização ocorrem exclusivamente de forma local no seu smartphone[cite: 1]. Suas fotos, vídeos e criações não são enviados nem hospedados em servidores externos próprios do desenvolvedor[cite: 1].</li>
+        <li><strong>Ferramenta Neutra:</strong> O desenvolvedor fornece apenas o meio tecnológico neutro, não realizando moderação ou fiscalização prévia sobre as edições produzidas[cite: 1].</li>
+      </ul>
+
+      <h2>2. Conectividade, Anúncios e Compras (Google Play)</h2>
+      <p>A internet é utilizada estritamente para:</p>
+      <ul>
+        <li><strong>Exibição de Anúncios:</strong> A versão gratuita contém publicidade intermediada pela rede Google AdMob, que pode coletar identificadores técnicos (Google Advertising ID) e telemetria básica do sistema[cite: 1].</li>
+        <li><strong>Validação de Compra:</strong> Na versão paga, a conexão serve para verificar o status de licença via Google Play Billing, desativando totalmente a publicidade.</li>
+      </ul>
+
+      <h2>3. Responsabilidade pelo Conteúdo e Propriedade Intelectual</h2>
+      <p>O usuário é o único e exclusivo responsável por toda mídia importada da galeria, desenhada ou exportada do aplicativo[cite: 1]. É estritamente vedado violar marcas, imagens comerciais ou direitos autorais de terceiros sem a devida autorização[cite: 1]. A possibilidade técnica de recortar ou converter arquivos não presume licença de uso[cite: 1].</p>
+
+      <h2>4. Proteção de Menores (Tolerância Zero)</h2>
+      <p>O aplicativo é destinado a maiores de 13 (treze) anos[cite: 1]. Usuários com idade entre 13 e 18 anos devem utilizá-lo sob o conhecimento e supervisão ativa dos pais ou responsáveis legais[cite: 1].</p>
+      <div class="alert-card">
+        <strong>PROIBIÇÃO ABSOLUTA:</strong> É sumariamente proibido produzir, desenhar, editar, importar ou compartilhar qualquer material sexual ou erótico envolvendo menores de idade[cite: 1]. Ocorrências serão imediatamente reportadas às autoridades judiciais e policiais competentes[cite: 1].
+      </div>
+
+      <h2>5. Exportação para Mensageiros e Nuvens Pessoais</h2>
+      <p>O usuário pode transferir seus pacotes para aplicativos terceiros (como WhatsApp) ou salvá-los em suas contas pessoais de nuvem (Google Drive, OneDrive, etc.)[cite: 1]. Uma vez exportados, o armazenamento e a integridade desses arquivos passam a ser regidos única e exclusivamente pelas políticas desses serviços externos[cite: 1].</p>
+
+      <h2>6. Ausência de Monitoramento e Isenção de Backup</h2>
+      <ul>
+        <li>A arquitetura estritamente offline impossibilita tecnicamente qualquer vigilância, monitoramento ou intervenção prévia por parte do desenvolvedor[cite: 1].</li>
+        <li>O aplicativo não dispõe de serviço de backup em nuvem[cite: 1]. A desinstalação do aplicativo ou a limpeza de dados do Android apagará permanentemente todos os projetos e arquivos salvos localmente[cite: 1].</li>
+      </ul>
+
+      <h2>7. Descontinuação e Legislação Aplicável</h2>
+      <p>O desenvolvedor reserva-se o direito de suspender ou descontinuar o aplicativo a qualquer momento[cite: 1]. Versões pagas já instaladas permanecerão acessíveis enquanto compatíveis com o sistema local[cite: 1]. Estes termos são regidos pelas leis da República Federativa do Brasil[cite: 1].</p>
+    </article>
+
+    <!-- CONTEÚDO EM INGLÊS -->
+    <article id="panel-en" class="content-panel">
+      <h2>1. Local &amp; Offline Architecture</h2>
+      <p>This application is a utility tool designed for drawing, media editing (photos, videos, GIFs), and sticker pack creation[cite: 1].</p>
+      <ul>
+        <li><strong>On-Device Processing:</strong> All processing, cropping, and rendering occur strictly on your device[cite: 1]. Your media files and creations are never uploaded, hosted, or transmitted to external servers owned by the developer[cite: 1].</li>
+        <li><strong>Neutral Tool:</strong> The developer merely provides software tools and does not preview, inspect, or moderate user creations[cite: 1].</li>
+      </ul>
+
+      <h2>2. Internet Use, Advertising &amp; Billing</h2>
+      <p>Internet connectivity is required exclusively for:</p>
+      <ul>
+        <li><strong>Advertising (Free Version):</strong> Third-party ads served via Google AdMob, which may process device identifiers (GAID) and basic crash telemetry[cite: 1].</li>
+        <li><strong>License Verification (Paid Version):</strong> Validating in-app purchase status via Google Play Billing to disable ads.</li>
+      </ul>
+
+      <h2>3. Intellectual Property &amp; User Conduct</h2>
+      <p>You retain sole legal responsibility for all media imported, edited, drawn, or exported[cite: 1]. Infringing upon copyrights, registered trademarks, or proprietary third-party rights without explicit authorization is strictly prohibited[cite: 1]. Technical ability to edit an image does not grant legal license[cite: 1].</p>
+
+      <h2>4. Age Restrictions &amp; Zero Tolerance Policy</h2>
+      <p>Users must be at least 13 years old (COPPA compliant)[cite: 1]. Minors between 13 and 18 must use this app under the supervision of a parent or legal guardian[cite: 1].</p>
+      <div class="alert-card">
+        <strong>ZERO TOLERANCE:</strong> Creating, importing, or editing any child sexual abuse material (CSAM/CSAE) or sexually suggestive content involving minors is strictly forbidden[cite: 1]. Violations will be immediately reported to law enforcement and relevant reporting centers[cite: 1].
+      </div>
+
+      <h2>5. External Sharing &amp; Personal Cloud Storage</h2>
+      <p>Users may freely export packs to third-party messaging apps (e.g., WhatsApp) or transfer files to personal cloud services (Google Drive, Microsoft OneDrive) via Android native sharing tools[cite: 1]. Exported files become subject strictly to the terms of those external platforms[cite: 1].</p>
+
+      <h2>6. No Active Monitoring &amp; Backup Disclaimer</h2>
+      <ul>
+        <li>Due to the offline nature of the app, the developer has no technical means to monitor or prevent misuse directly on the device[cite: 1].</li>
+        <li>No cloud backup service is provided[cite: 1]. Clearing device storage or uninstalling the app permanently removes all locally saved stickers and projects[cite: 1].</li>
+      </ul>
+
+      <h2>7. Warranty Disclaimer &amp; Class Action Waiver</h2>
+      <div class="caps-disclaimer">
+        THE APPLICATION IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ALL CLAIMS MUST BE RESOLVED INDIVIDUALLY; YOU EXPRESSLY WAIVE ANY RIGHT TO PARTICIPATE IN CLASS ACTION LAWSUITS.
+      </div>
+    </article>
+
+    <!-- CONTEÚDO EM ESPANHOL -->
+    <article id="panel-es" class="content-panel">
+      <h2>1. Tratamiento Local y Sin Conexión (Offline)</h2>
+      <p>Esta aplicación constituye una herramienta técnica para el dibujo libre, edición multimedia (fotos, vídeos, GIFs) y compilación de paquetes de pegatinas (stickers)[cite: 1].</p>
+      <ul>
+        <li><strong>Procesamiento en el Dispositivo:</strong> Todas las operaciones de edición se ejecutan localmente en el terminal[cite: 1]. Las imágenes y contenidos generados no se transmiten ni almacenan en servidores propios del desarrollador[cite: 1].</li>
+        <li><strong>Herramienta Neutral:</strong> El desarrollador actúa como mero facilitador de software y no efectúa moderación previa sobre los archivos[cite: 1].</li>
+      </ul>
+
+      <h2>2. Conectividad, Anuncios y Facturación</h2>
+      <p>El uso de conexión a internet se limita rigurosamente a:</p>
+      <ul>
+        <li><strong>Publicidad (Versión Gratuita):</strong> Emisión de anuncios mediante la red Google AdMob, la cual puede recabar identificadores seudonimizados (Google Advertising ID) y registros técnicos básicos[cite: 1].</li>
+        <li><strong>Validación de Licencia:</strong> Comprobación del estado de compra para la supresión de anuncios a través de Google Play Billing.</li>
+      </ul>
+
+      <h2>3. Responsabilidad del Usuario y Propiedad Intelectual</h2>
+      <p>El usuario asume la responsabilidad exclusiva por cualquier contenido importado, modificado o exportado[cite: 1]. Queda prohibida la infracción de obras protegidas por derechos de autor o marcas registradas sin la correspondiente licencia o autorización[cite: 1].</p>
+
+      <h2>4. Protección de Menores y Prohibición Absoluta</h2>
+      <p>La aplicación está destinada a personas a partir de 13 años[cite: 1]. En España, conforme a la LOPDGDD, se exige la supervisión activa de progenitores o tutores para los menores de 18 años[cite: 1].</p>
+      <div class="alert-card">
+        <strong>TOLERANCIA CERO:</strong> Queda terminantemente prohibida la creación, edición o difusión de material sexual o pornográfico que involucre a menores de edad[cite: 1]. Todo indicio será denunciado inmediatamente ante las fuerzas de seguridad competentes[cite: 1].
+      </div>
+
+      <h2>5. Exportación a Mensajería y Nubes Personales</h2>
+      <p>El usuario puede exportar sus paquetes a aplicaciones de mensajería (como WhatsApp) o transferirlos a sus cuentas personales en la nube (Google Drive, OneDrive) mediante las opciones nativas del sistema[cite: 1]. La privacidad y seguridad de dichos archivos exportados se regirán por las políticas de dichos proveedores terceros[cite: 1].</p>
+
+      <h2>6. Inexistencia de Monitorización y Sin Copia en la Nube</h2>
+      <ul>
+        <li>La arquitectura local impide técnicamente al desarrollador supervisar o fiscalizar el uso de la herramienta en el dispositivo[cite: 1].</li>
+        <li>No se ofrece servicio de respaldo remoto[cite: 1]. El borrado de datos o la desinstalación de la app conllevará la eliminación definitiva de las creaciones locales[cite: 1].</li>
+      </ul>
+
+      <h2>7. Descontinuación y Normativa Europea</h2>
+      <p>El desarrollador se reserva el derecho de suspender o descatalogar la aplicación[cite: 1]. Nada de lo expuesto privará a los usuarios residentes en España o la UE de las garantías imperativas que les asistan conforme a la normativa de consumidores (TRLGDCU), pudiendo acudir a los tribunales de su domicilio habitual.</p>
+    </article>
+
+    <footer>
+      <p>&copy; 2026. Todos os direitos reservados / All rights reserved / Todos los derechos reservados.</p>
+      <p>Contato / Contact: <strong>seu-email@dominio.com</strong></p>
+    </footer>
+  </div>
+
+  <script>
+    function switchLang(lang) {
+      // Oculta todos os painéis
+      document.querySelectorAll('.content-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      // Desativa todos os botões
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Ativa o painel selecionado
+      const activePanel = document.getElementById('panel-' + lang);
+      if (activePanel) {
+        activePanel.classList.add('active');
+      }
+
+      // Ativa o botão selecionado
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
