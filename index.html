@@ -1,7 +1,475 @@
-<script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Termos de Uso &amp; Política de Privacidade | Terms &amp; Privacy</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --badge-bg: #eff6ff;
+      --badge-text: #1d4ed8;
+      --warning-bg: #fef2f2;
+      --warning-border: #fecaca;
+      --warning-text: #991b1b;
+      --radius: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card-bg: #1e293b;
+        --text: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border: #334155;
+        --badge-bg: #1e3a8a;
+        --badge-text: #93c5fd;
+        --warning-bg: #450a0a;
+        --warning-border: #7f1d1d;
+        --warning-text: #fca5a5;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2.5rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+    }
+
+    .date {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .lang-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 0.35rem;
+      border-radius: 9999px;
+      margin: 1.5rem auto 2rem auto;
+      max-width: 400px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.55rem 1rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+
+    .content-panel {
+      display: none;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .content-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.4rem;
+      color: var(--text);
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    p {
+      margin-bottom: 0.9rem;
+    }
+
+    ul {
+      margin-bottom: 1.1rem;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    .alert-card {
+      background-color: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+      padding: 1.1rem 1.25rem;
+      border-radius: 8px;
+      margin: 1.25rem 0;
+      font-weight: 500;
+    }
+
+    .caps-disclaimer {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      background: var(--bg);
+      border-left: 4px solid var(--border);
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: ui-monospace, monospace;
+      margin: 1rem 0;
+    }
+
+    .section-divider {
+      margin: 2.5rem 0;
+      border: 0;
+      border-top: 1px dashed var(--border);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">Documento Oficial / Official Document</span>
+      <h1>Termos &amp; Privacidade</h1>
+      <p class="date">Última Atualização / Last Updated / Última Actualización: 08/09/2026</p>
+    </header>
+
+    <nav class="lang-tabs" aria-label="Seletor de Idioma">
+      <button class="tab-btn" data-lang="pt" onclick="switchLang('pt')">Português</button>
+      <button class="tab-btn" data-lang="en" onclick="switchLang('en')">English</button>
+      <button class="tab-btn" data-lang="es" onclick="switchLang('es')">Español</button>
+    </nav>
+
+    <!-- ========================================================
+         1. PORTUGUÊS (BRASIL)
+         ======================================================== -->
+    <article id="panel-pt" class="content-panel">
+      <h2>TERMOS DE USO E USO RESPONSÁVEL</h2>
+      <p>Ao utilizar este aplicativo, você declara que leu, compreendeu e concorda com estes Termos de Uso. Caso não concorde com qualquer condição abaixo, não utilize o aplicativo.</p>
+
+      <h3>1. Sobre o Aplicativo e Funcionamento Offline</h3>
+      <p>Este aplicativo é uma ferramenta destinada à criação, desenho, animação, edição e processamento de imagens, GIFs, vídeos e pacotes de figurinhas (stickers).</p>
+      <ul>
+        <li><strong>Operação Local e Offline:</strong> O aplicativo foi desenvolvido para funcionar predominantemente de forma offline. Todo o processamento, recorte e renderização são executados localmente no dispositivo. Não há servidores em nuvem do desenvolvedor armazenando ou processando as criações do usuário.</li>
+        <li><strong>Conectividade e Internet:</strong> A conexão com a internet é utilizada estritamente para exibir publicidade de terceiros (na versão livre/gratuita) e para verificar o status de compra/licença paga por meio do Google Play.</li>
+        <li><strong>Isenção de Autoria:</strong> O aplicativo não é responsável pelo conteúdo criado, importado, editado, armazenado ou compartilhado pelo usuário.</li>
+      </ul>
+
+      <h3>2. Responsabilidade pelo Conteúdo</h3>
+      <p>O usuário é integralmente responsável por todo conteúdo que criar, importar, editar, exportar ou compartilhar por qualquer recurso externo. O aplicativo não reivindica propriedade sobre as criações e o usuário declara possuir todos os direitos e licenças necessários para utilizar o material manipulado.</p>
+
+      <h3>3. Direitos Autorais e Propriedade Intelectual</h3>
+      <p>É expressamente proibido utilizar o aplicativo para violar direitos autorais ou propriedade intelectual de terceiros (filmes, séries, músicas, desenhos, personagens protegidos, fotografias ou marcas registradas). A viabilidade técnica de recortar ou converter arquivos não presume autorização legal de uso.</p>
+
+      <h3>4. Conteúdo Sexual e Proteção Absoluta de Menores</h3>
+      <p>O aplicativo não foi desenvolvido para conteúdos pornográficos ou sexualmente explícitos.</p>
+      <div class="alert-card">
+        <strong>TOLERÂNCIA ZERO — CONTEÚDO SEXUAL ENVOLVENDO MENORES:</strong><br>
+        É EXTREMAMENTE PROIBIDO utilizar o aplicativo para criar, desenhar, editar, armazenar, importar ou compartilhar qualquer conteúdo pornográfico ou sexual envolvendo crianças ou adolescentes (seja real, desenhado, animado ou gerado digitalmente). Tais práticas constituem crime hediondo conforme a legislação aplicável e serão imediatamente notificadas às autoridades policiais competentes.
+      </div>
+
+      <h3>5. Conteúdo Ilegal</h3>
+      <p>É proibida a utilização do aplicativo para criar, editar, armazenar ou facilitar atividades ilegais, incluindo terrorismo, ameaças, estelionato, fraudes financeiras, instruções criminosas, falsificação de documentos ou extorsão.</p>
+
+      <h3>6. Conteúdo Ofensivo, Abusivo ou Discriminatório</h3>
+      <p>O aplicativo não deve ser utilizado para produzir ou distribuir materiais voltados à prática de bullying, perseguição (stalking), promoção de ódio, violência contra minorias ou qualquer forma de discriminação e difamação.</p>
+
+      <h3>7. Privacidade e Dados de Terceiros</h3>
+      <p>O usuário não deve processar ou manipular dados pessoais sensíveis, documentos (como CPF/RG), fotos íntimas privadas ou dados bancários de terceiros sem respaldo legal e prévia autorização.</p>
+
+      <h3>8. Impersonação e Fraude</h3>
+      <p>É proibido utilizar o aplicativo com o objetivo de criar conteúdos para enganar terceiros, forjar comunicações oficiais falsas ou facilitar golpes e engenharia social.</p>
+
+      <h3>9. Conteúdo Gerado ou Editado</h3>
+      <p>Ferramentas de edição podem alterar sensivelmente imagens e vídeos. O usuário é responsável por verificar o resultado antes de compartilhá-lo. O desenvolvedor não garante que as produções serão apropriadas para qualquer finalidade específica.</p>
+
+      <h3>10. Ausência de Monitoramento Técnico</h3>
+      <p>Devido à sua arquitetura offline, o desenvolvedor não possui meios técnicos, acesso ou controle para vigiar, auditar ou moderar o que é manipulado ou salvo no dispositivo do usuário. A ausência de monitoramento não autoriza práticas ilícitas nem afasta a responsabilidade exclusiva do usuário.</p>
+
+      <h3>11. Serviços de Terceiros, Mensageiros e Nuvens Pessoais</h3>
+      <ul>
+        <li><strong>Redes e Faturamento:</strong> Anúncios e compras utilizam bibliotecas terceiras (Google AdMob e Google Play) sob suas próprias regras.</li>
+        <li><strong>Exportação a Mensageiros:</strong> Ao exportar figurinhas para mensageiros como o WhatsApp, o envio sujeita-se às diretrizes da respectiva plataforma.</li>
+        <li><strong>Nuvens Pessoais:</strong> O usuário é livre para salvar seus arquivos em contas privadas de nuvem (Google Drive, OneDrive, etc.) via compartilhamento do sistema; a guarda e privacidade nesses serviços são regidas por seus próprios termos.</li>
+      </ul>
+
+      <h3>12. Limitação de Responsabilidade</h3>
+      <p>Na máxima extensão permitida pela legislação aplicável, o desenvolvedor não será responsável por perdas de arquivos locais, danos indiretos, problemas no sistema operacional do dispositivo ou condutas ilícitas cometidas por usuários.</p>
+
+      <h3>13. Salvamento e Perda de Arquivos (Sem Backup em Nuvem)</h3>
+      <p>O aplicativo salva projetos localmente e <strong>não oferece backup em nuvem</strong>. O usuário é responsável por manter cópias externas de segurança. O desenvolvedor não garante a recuperação de dados perdidos por falhas no aparelho, formatação ou desinstalação.</p>
+
+      <h3>14. Propriedade Intelectual do Aplicativo</h3>
+      <p>O código, a interface, os algoritmos e a identidade visual pertencem exclusivamente ao desenvolvedor, sendo vedada qualquer engenharia reversa, cópia ou exploração comercial não autorizada.</p>
+
+      <h3>15. Uso por Menores, Descontinuação e Legislação Aplicável</h3>
+      <ul>
+        <li><strong>Idade Mínima:</strong> Aplicativo destinado a maiores de 13 (treze) anos. Menores entre 13 e 18 anos devem utilizá-lo com o conhecimento e supervisão ativa dos pais ou responsáveis legais.</li>
+        <li><strong>Descontinuação:</strong> O aplicativo pode ser alterado ou descontinuado a qualquer momento. Versões pagas já instaladas permanecerão ativas localmente enquanto compatíveis com o aparelho, encerrando-se suporte técnico e novas atualizações.</li>
+        <li><strong>Legislação e Foro:</strong> Estes Termos são regidos pelas leis do Brasil, elegendo-se o foro do domicílio do desenvolvedor, resguardados os direitos da LGPD e do Código de Defesa do Consumidor.</li>
+      </ul>
+
+      <hr class="section-divider" />
+
+      <h2>POLÍTICA DE PRIVACIDADE UNIFICADA</h2>
+      <p>Esta política resume como as informações são tratadas no aplicativo em total conformidade com a LGPD:</p>
+      <ul>
+        <li><strong>Processamento Local:</strong> Suas fotos, vídeos, desenhos e figurinhas não são enviados para nenhum servidor do aplicativo. Todo o processamento é estritamente local.</li>
+        <li><strong>Permissões:</strong> Câmera e galeria são acessadas exclusivamente quando você seleciona mídias para edição.</li>
+        <li><strong>Dados de Terceiros:</strong> Na versão livre, o Google AdMob coleta identificadores técnicos (como o Google Advertising ID) para controle e entrega de anúncios. No modelo pago, o Google Play Billing autentica a compra.</li>
+      </ul>
+    </article>
+
+    <!-- ========================================================
+         2. ENGLISH (UNITED STATES & INTERNATIONAL)
+         ======================================================== -->
+    <article id="panel-en" class="content-panel">
+      <h2>TERMS OF USE AND RESPONSIBLE USE</h2>
+      <p>By using this application, you acknowledge that you have read, understood, and agreed to these Terms of Use. If you do not agree with any condition below, do not use the application.</p>
+
+      <h3>1. About the Application &amp; Offline Operation</h3>
+      <p>This application is a tool intended for drawing, animation, editing, and processing images, GIFs, videos, and digital sticker packs.</p>
+      <ul>
+        <li><strong>Local &amp; Offline Processing:</strong> The application is designed to operate predominantly offline. All rendering, cropping, and manipulations occur locally on your device. No cloud servers owned by the developer store or process your creations.</li>
+        <li><strong>Connectivity &amp; Internet:</strong> Internet connectivity is used strictly to display third-party advertisements (in the free tier) and verify paid purchase/license status via Google Play.</li>
+        <li><strong>Disclaimer of Authorship:</strong> The application is not responsible for user-created, imported, edited, stored, or shared content.</li>
+      </ul>
+
+      <h3>2. Content Responsibility</h3>
+      <p>You retain sole legal responsibility for all content you create, import, edit, export, or share through any external channel. The application claims no ownership over user creations, and you represent that you possess all necessary rights and licenses.</p>
+
+      <h3>3. Copyrights &amp; Intellectual Property</h3>
+      <p>Using the application to infringe third-party copyrights or intellectual property (movies, television series, music, copyrighted characters, photographs, or registered trademarks) is strictly prohibited. Technical editing capability does not imply legal license.</p>
+
+      <h3>4. Adult Content &amp; Absolute Child Protection</h3>
+      <p>The application was not developed for sexually explicit or pornographic content.</p>
+      <div class="alert-card">
+        <strong>ZERO TOLERANCE — CHILD SEXUAL ABUSE MATERIAL (CSAM/CSAE):</strong><br>
+        It is STRICTLY FORBIDDEN to use this application to create, draw, edit, store, import, or share any sexually explicit or pornographic material involving minors (real, drawn, animated, or digitally generated). Such conduct constitutes a severe federal crime and will be immediately reported to law enforcement agencies.
+      </div>
+
+      <h3>5. Illegal Content</h3>
+      <p>You may not utilize the application to create, edit, store, or facilitate unlawful activities, including terrorism, violent threats, wire fraud, criminal instructions, forgery, or extortion.</p>
+
+      <h3>6. Offensive, Abusive, or Discriminatory Material</h3>
+      <p>The application must not be used to produce or distribute material intended for bullying, cyberstalking, hate speech, violence promotion, or defamation against any group or individual.</p>
+
+      <h3>7. Privacy &amp; Third-Party Data</h3>
+      <p>Users must not process sensitive personal data, government IDs, private intimate photographs, or financial details without proper legal basis and prior consent.</p>
+
+      <h3>8. Impersonation &amp; Fraud</h3>
+      <p>It is prohibited to use the tool to deceive third parties, forge fraudulent documents, or facilitate social engineering schemes.</p>
+
+      <h3>9. Generated or Edited Content</h3>
+      <p>Editing tools significantly alter digital files. You are responsible for inspecting results prior to sharing. The developer provides no warranty of fitness for specific purposes.</p>
+
+      <h3>10. Absence of Technical Monitoring</h3>
+      <p>Due to offline architecture, the developer has no technical means, access, or ability to monitor, inspect, or audit files created or stored on your device. This absence does not authorize unlawful actions.</p>
+
+      <h3>11. Third-Party Services, Messengers &amp; Personal Cloud</h3>
+      <ul>
+        <li><strong>Ad Networks &amp; Billing:</strong> Ads and payment verifications are handled by Google services subject to their respective terms.</li>
+        <li><strong>Messengers (WhatsApp, etc.):</strong> Exporting sticker packs makes their subsequent transmission subject to external messenger policies.</li>
+        <li><strong>Personal Cloud Storage:</strong> Users are free to transfer files to their personal cloud accounts (Google Drive, OneDrive, etc.); cloud storage remains governed by the selected provider.</li>
+      </ul>
+
+      <h3>12. Limitation of Liability</h3>
+      <p>To the maximum extent permitted by law, the developer shall not be liable for local file loss, device incompatibilities, or third-party rights violations committed by users.</p>
+
+      <h3>13. Local Storage &amp; Backup Disclaimer</h3>
+      <p>The application saves files locally and <strong>provides no cloud backup services</strong>. Users must maintain external copies. The developer does not guarantee recovery of files deleted due to hardware failures or uninstallation.</p>
+
+      <h3>14. Proprietary Software Rights</h3>
+      <p>The software code, graphical user interface, and branding elements remain exclusive property of the developer. Reverse engineering or unauthorized distribution is strictly prohibited.</p>
+
+      <h3>15. Minors, Discontinuation &amp; Legal Disclaimers</h3>
+      <ul>
+        <li><strong>Age Requirement:</strong> Intended for users aged 13 and older (COPPA compliant). Minors between 13 and 18 require parental supervision and consent.</li>
+        <li><strong>Discontinuation:</strong> The app may be discontinued at any time. Installed paid versions remain usable locally while device compatibility lasts, without ongoing maintenance.</li>
+      </ul>
+      <div class="caps-disclaimer">
+        THE APP IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ALL DISPUTES MUST BE RESOLVED INDIVIDUALLY; YOU EXPRESSLY WAIVE ANY RIGHT TO PARTICIPATE IN CLASS ACTION LAWSUITS.
+      </div>
+
+      <hr class="section-divider" />
+
+      <h2>UNIFIED PRIVACY POLICY</h2>
+      <ul>
+        <li><strong>Local Processing:</strong> Media files never leave your device via developer code.</li>
+        <li><strong>Permissions:</strong> Storage and camera access are requested strictly to allow you to select files locally.</li>
+        <li><strong>Third Parties:</strong> Google AdMob processes non-sensitive identifiers (GAID) for ads on the free tier; Google Play manages in-app purchase tokens directly.</li>
+      </ul>
+    </article>
+
+    <!-- ========================================================
+         3. ESPAÑOL (ESPAÑA & LATINOAMÉRICA)
+         ======================================================== -->
+    <article id="panel-es" class="content-panel">
+      <h2>TÉRMINOS DE USO Y USO RESPONSABLE</h2>
+      <p>Al utilizar esta aplicación, declara haber leído, comprendido y aceptado estos Términos de Uso. En caso de desacuerdo, absténgase de utilizar la aplicación.</p>
+
+      <h3>1. Sobre la Aplicación y Tratamiento Local (Offline)</h3>
+      <p>Herramienta técnica para dibujo, animación, procesamiento multimedia (fotos, vídeos, GIFs) y generación de paquetes de pegatinas (stickers).</p>
+      <ul>
+        <li><strong>Funcionamiento Local:</strong> Funciona predominantemente de manera offline. La edición y renderizado se efectúan localmente sin alojarse en servidores externos del desarrollador.</li>
+        <li><strong>Conectividad:</strong> Se utiliza exclusivamente para la emisión de anuncios (versión gratuita) y verificación de compra/licencia mediante Google Play.</li>
+        <li><strong>Exención de Autoría:</strong> El desarrollador no responde por los contenidos creados, importados o compartidos por el usuario.</li>
+      </ul>
+
+      <h3>2. Responsabilidad sobre el Contenido</h3>
+      <p>El usuario asume toda la responsabilidad legal por el material que cree, importe, modifique o exporte. La aplicación no reclama propiedad sobre las creaciones y el usuario declara poseer las licencias necesarias para su uso.</p>
+
+      <h3>3. Derechos de Autor y Propiedad Intelectual</h3>
+      <p>Queda prohibido vulnerar derechos de autor, marcas registradas o elementos protegidos de terceros (películas, música, personajes o fotos). La capacidad técnica de editar archivos no confiere autorización legal de uso.</p>
+
+      <h3>4. Contenido Sexual y Protección Absoluta de Menores</h3>
+      <p>La herramienta no está diseñada para fines pornográficos ni sexualmente explícitos.</p>
+      <div class="alert-card">
+        <strong>TOLERANCIA CERO — MATERIAL DE ABUSO SEXUAL DE MENORES:</strong><br>
+        Queda TERMINANTEMENTE PROHIBIDO crear, dibujar, transformar, almacenar o difundir cualquier material sexual que involucre a menores de edad (real, animado o generado por ordenador). Dichos actos constituyen delitos penales perseguidos judicialmente y serán denunciados de inmediato ante las fuerzas de seguridad.
+      </div>
+
+      <h3>5. Contenido Ilegal</h3>
+      <p>Se prohíbe el uso para actividades ilegales: amenazas, terrorismo, fraudes, estafas, falsificación documental o extorsión.</p>
+
+      <h3>6. Contenido Ofensivo, Abusivo o Discriminatorio</h3>
+      <p>La herramienta no debe ser utilizada para ciberacoso (bullying), hostigamiento, promoción del odio, violencia o discriminación contra grupos o personas.</p>
+
+      <h3>7. Privacidad y Datos de Terceros</h3>
+      <p>El usuario no debe procesar datos personales sensibles, documentos identificativos (como DNI/NIE), fotos íntimas privadas o datos bancarios sin previo consentimiento.</p>
+
+      <h3>8. Suplantación de Identidad y Fraude</h3>
+      <p>Queda prohibida la creación de contenidos orientados a engañar a terceros, simular documentos oficiales o facilitar estafas.</p>
+
+      <h3>9. Contenido Generado o Editado</h3>
+      <p>Las herramientas de edición pueden transformar significativamente los archivos. El usuario es responsable de verificar el resultado antes de compartirlo.</p>
+
+      <h3>10. Inexistencia de Monitorización Técnica</h3>
+      <p>La arquitectura offline imposibilita técnicamente al desarrollador supervisar, auditar o conocer las creaciones en el terminal del usuario. Esta circunstancia no autoriza conductas ilícitas.</p>
+
+      <h3>11. Servicios de Terceros, Mensajería y Nubes Personales</h3>
+      <ul>
+        <li><strong>Publicidad y Compras:</strong> Los anuncios y cobros se gestionan mediante servicios de Google bajo sus propias condiciones.</li>
+        <li><strong>Mensajería (WhatsApp):</strong> La exportación e intercambio de pegatinas queda sujeta a las normas de dichas plataformas.</li>
+        <li><strong>Almacenamiento en la Nube:</strong> El usuario puede transferir sus archivos a sus cuentas privadas en la nube (Google Drive, OneDrive, etc.); la custodia dependerá de dicho proveedor.</li>
+      </ul>
+
+      <h3>12. Limitación de Responsabilidad</h3>
+      <p>En la máxima medida legal aplicable, el desarrollador no responde por pérdida de archivos locales, incompatibilidades del sistema o actos ilícitos cometidos por usuarios.</p>
+
+      <h3>13. Almacenamiento Local (Sin Copia en la Nube)</h3>
+      <p>La aplicación guarda los datos localmente y <strong>no ofrece servicio de respaldo remoto</strong>. El borrado de datos o la desinstalación elimina de forma permanente e irrecuperable los archivos locales.</p>
+
+      <h3>14. Propiedad Intelectual del Software</h3>
+      <p>El código, diseño y recursos gráficos pertenecen exclusivamente al desarrollador, prohibiéndose su ingeniería inversa o redistribución.</p>
+
+      <h3>15. Menores, Descontinuación y Normativa Aplicable</h3>
+      <ul>
+        <li><strong>Edad Mínima:</strong> Destinada a personas a partir de 13 años. Menores de 18 años requieren autorización y supervisión activa de padres o tutores legales.</li>
+        <li><strong>Descontinuación:</strong> El desarrollador puede retirar la app de las tiendas. La versión de pago instalada seguirá activa localmente mientras haya compatibilidad con el sistema.</li>
+        <li><strong>Consumidores (UE/España):</strong> Nada de lo expuesto limitará los derechos imperativos del usuario conforme al TRLGDCU y el RGPD en su residencia habitual.</li>
+      </ul>
+
+      <hr class="section-divider" />
+
+      <h2>POLÍTICA DE PRIVACIDAD UNIFICADA</h2>
+      <ul>
+        <li><strong>Tratamiento en Dispositivo:</strong> Las fotos y vídeos no son transferidos a servidores externos propios.</li>
+        <li><strong>Permisos:</strong> Galería y cámara se emplean exclusivamente para permitir la selección de imágenes por parte del usuario.</li>
+        <li><strong>Servicios Externos:</strong> Google AdMob trata identificadores técnicos (GAID) para anuncios en la versión libre; Google Play gestiona los pagos de licencias de forma segura.</li>
+      </ul>
+    </article>
+
+    <footer>
+      <p>&copy; 2026. Todos os direitos reservados / All rights reserved / Todos los derechos reservados.</p>
+      <p>Suporte / Support / Contacto: <strong>luisjf@gmail.com</strong></p>
+    </footer>
+  </div>
+
+  <script>
     function switchLang(lang) {
       document.querySelectorAll('.content-panel').forEach(panel => {
         panel.classList.remove('active');
+        panel.style.display = 'none';
       });
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -10,6 +478,7 @@
       const activePanel = document.getElementById('panel-' + lang);
       if (activePanel) {
         activePanel.classList.add('active');
+        activePanel.style.display = 'block';
       }
 
       const activeBtn = document.querySelector(`.tab-btn[data-lang="${lang}"]`);
@@ -18,52 +487,62 @@
       }
     }
 
-    // Lista de países de língua espanhola (ISO-2)
     const spanishCountries = [
       'ES', 'MX', 'AR', 'CO', 'CL', 'PE', 'VE', 'EC', 'GT', 
       'CU', 'BO', 'DO', 'HN', 'PY', 'SV', 'NI', 'CR', 'PR', 'PA', 'UY', 'GQ'
     ];
 
-    // Detecta o idioma com base em: Idioma do Sistema + Fuso Horário + País via IP
-    async function detectLanguageAndRegion() {
-      // 1. Idioma do Navegador/Dispositivo
-      const userLang = (navigator.language || (navigator.languages && navigator.languages[0]) || 'en').toLowerCase();
-      
-      // 2. Fuso Horário Local (útil para PCs e notebooks)
+    function resolveLanguage() {
+      const langs = navigator.languages ? Array.from(navigator.languages) : [navigator.language || 'en'];
+      const primaryLang = (langs[0] || '').toLowerCase();
+
       let timeZone = '';
       try {
         timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
       } catch (e) {}
 
-      // Decisão preliminar imediata (zero delay)
-      if (userLang.startsWith('pt') || timeZone.includes('Sao_Paulo') || timeZone.includes('Recife') || timeZone.includes('Lisbon')) {
-        switchLang('pt');
-      } else if (userLang.startsWith('es') || timeZone.includes('Madrid') || timeZone.includes('Buenos_Aires') || timeZone.includes('Mexico_City')) {
-        switchLang('es');
-      } else {
-        switchLang('en');
+      if (primaryLang.startsWith('pt')) return 'pt';
+      if (primaryLang.startsWith('es')) return 'es';
+      if (primaryLang.startsWith('en')) return 'en';
+
+      if (timeZone.includes('Sao_Paulo') || timeZone.includes('Recife') || timeZone.includes('Lisbon')) {
+        return 'pt';
+      }
+      if (timeZone.includes('Madrid') || timeZone.includes('Buenos_Aires') || timeZone.includes('Mexico') || timeZone.includes('Bogota') || timeZone.includes('Santiago')) {
+        return 'es';
       }
 
-      // 3. Verificação por Região Geográfica (IP Geolocation em background)
-      try {
-        const response = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
-        if (response.ok) {
-          const data = await response.json();
-          const country = (data.country_code || '').toUpperCase();
+      return 'en';
+    }
 
-          if (country === 'BR' || country === 'PT') {
-            switchLang('pt');
-          } else if (spanishCountries.includes(country)) {
-            switchLang('es');
-          } else {
-            switchLang('en');
+    async function detectLanguageAndRegion() {
+      let targetLang = resolveLanguage();
+      switchLang(targetLang);
+
+      if (window.location.protocol.startsWith('http')) {
+        try {
+          const res = await fetch('https://ipapi.co/json/');
+          if (res.ok) {
+            const data = await res.json();
+            const country = (data.country_code || '').toUpperCase();
+
+            if (country === 'BR' || country === 'PT') {
+              switchLang('pt');
+            } else if (spanishCountries.includes(country)) {
+              switchLang('es');
+            } else {
+              switchLang('en');
+            }
           }
-        }
-      } catch (err) {
-        // Se a requisição de IP falhar (ex: offline ou adblocker),
-        // mantém a seleção feita pelo navegador/fuso horário sem causar erro.
+        } catch (e) {}
       }
     }
 
-    document.addEventListener('DOMContentLoaded', detectLanguageAndRegion);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', detectLanguageAndRegion);
+    } else {
+      detectLanguageAndRegion();
+    }
   </script>
+</body>
+</html>
