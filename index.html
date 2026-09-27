@@ -580,9 +580,7 @@
       }
     };
 
-    // Função de alternância manual ou automática
     function switchLang(lang) {
-      // 1. Esconde todos os painéis e desmarca botões
       document.querySelectorAll('.content-panel').forEach(panel => {
         panel.classList.remove('active');
         panel.style.display = 'none';
@@ -591,20 +589,17 @@
         btn.classList.remove('active');
       });
 
-      // 2. Exibe o painel ativo
       const activePanel = document.getElementById('panel-' + lang);
       if (activePanel) {
         activePanel.classList.add('active');
         activePanel.style.display = 'block';
       }
 
-      // 3. Marca o botão selecionado
       const activeBtn = document.querySelector(`.tab-btn[data-lang="${lang}"]`);
       if (activeBtn) {
         activeBtn.classList.add('active');
       }
 
-      // 4. Atualiza o TÍTULO (h1), o BADGE, a DATA e o TÍTULO DA ABA (<title>)
       const data = headerTranslations[lang] || headerTranslations.en;
       const elBadge = document.getElementById('main-badge');
       const elTitle = document.getElementById('main-title');
@@ -616,7 +611,6 @@
       document.title = data.docTitle;
     }
 
-    // Revela a interface e oculta o spinner
     function revealContent() {
       const loader = document.getElementById('page-loader');
       const content = document.getElementById('main-content');
@@ -624,27 +618,67 @@
       if (content) content.style.display = 'block';
     }
 
-    const spanishCountries = [
-      'ES', 'MX', 'AR', 'CO', 'CL', 'PE', 'VE', 'EC', 'GT', 
-      'CU', 'BO', 'DO', 'HN', 'PY', 'SV', 'NI', 'CR', 'PR', 'PA', 'UY', 'GQ'
-    ];
+    /**
+     * Lê a região e idioma selecionados no sistema do Android
+     * Exemplo de retorno: locale: "pt-BR", country: "BR", lang: "pt"
+     */
+    function getAndroidSystemLocale() {
+      try {
+        // Tenta pegar a região exata resolvida pelo sistema do dispositivo
+        const resolved = Intl.DateTimeFormat().resolvedOptions().locale; // ex: "pt-BR", "es-ES", "en-US"
+        
+        let country = '';
+        let language = '';
 
-    function fallbackByBrowser() {
-      const langs = navigator.languages ? Array.from(navigator.languages) : [navigator.language || 'en'];
-      const primaryLang = (langs[0] || '').toLowerCase();
+        if (typeof Intl.Locale !== 'undefined') {
+          const localeObj = new Intl.Locale(resolved);
+          country = (localeObj.region || '').toUpperCase();
+          language = (localeObj.language || '').toLowerCase();
+        } else {
+          const parts = resolved.split('-');
+          language = (parts[0] || '').toLowerCase();
+          country = (parts[1] || '').toUpperCase();
+        }
 
-      if (primaryLang.startsWith('pt')) return 'pt';
-      if (primaryLang.startsWith('es')) return 'es';
-      return 'en';
+        // Se o resolvedOptions não trouxe o país, verifica navigator.languages
+        if (!country) {
+          const langs = navigator.languages || [navigator.language || ''];
+          for (const l of langs) {
+            if (l.includes('-')) {
+              country = l.split('-')[1].toUpperCase();
+              break;
+            }
+          }
+        }
+
+        return { country, language };
+      } catch (err) {
+        return { country: '', language: '' };
+      }
     }
 
-    // Detecção com Prioridade Absoluta para o IP do VPN
+    /**
+     * Mapeia um código de país (BR, ES, US, etc.) para o idioma do documento
+     */
+    function mapCountryToLang(countryCode) {
+      if (!countryCode) return null;
+      const c = countryCode.toUpperCase();
+      if (c === 'BR') return 'pt';
+      if (c === 'ES') return 'es';
+      return 'en'; // EUA ('US') e resto do mundo
+    }
+
+    // Fluxo principal combinando Detecção por IP + Leitura do Android
     async function detectLanguageAndRegion() {
       let chosenLang = null;
 
+      // 1. Lê os dados configurados no próprio Android
+      const androidInfo = getAndroidSystemLocale();
+
+      // 2. Consulta a localização do IP (com timeout de 2s para não travar a tela)
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 segundos limite
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
 
         const res = await fetch('https://ipwho.is/', { signal: controller.signal });
         clearTimeout(timeoutId);
@@ -652,27 +686,30 @@
         if (res.ok) {
           const data = await res.json();
           if (data && data.success !== false) {
-            const country = (data.country_code || '').toUpperCase();
-
-            if (country === 'BR' || country === 'PT') {
-              chosenLang = 'pt';
-            } else if (spanishCountries.includes(country)) {
-              chosenLang = 'es';
-            } else {
-              chosenLang = 'en';
-            }
+            const ipCountry = (data.country_code || '').toUpperCase();
+            chosenLang = mapCountryToLang(ipCountry);
           }
         }
       } catch (e) {
-        // Ignora erro de rede/timeout
+        // Falha de rede ou timeout
       }
 
-      // Se falhar ou demorar mais que 2 segundos, aplica o fallback do navegador
+      // 3. Se a busca por IP não retornou ou falhou, usa a região/idioma do Android
       if (!chosenLang) {
-        chosenLang = fallbackByBrowser();
+        // Primeiro tenta pela região geográfica selecionada no Android
+        if (androidInfo.country) {
+          chosenLang = mapCountryToLang(androidInfo.country);
+        }
+
+        // Se ainda não definiu, decide pelo idioma do Android
+        if (!chosenLang) {
+          if (androidInfo.language === 'pt') chosenLang = 'pt';
+          else if (androidInfo.language === 'es') chosenLang = 'es';
+          else chosenLang = 'en';
+        }
       }
 
-      // Aplica o idioma (incluindo a tradução do título) e só então revela a página
+      // Aplica o idioma escolhido e exibe a página
       switchLang(chosenLang);
       revealContent();
     }
