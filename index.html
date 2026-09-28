@@ -50,7 +50,6 @@
       padding: 2.5rem 1rem;
     }
 
-    /* Loader de Inicialização em Tela Cheia/Centralizado */
     #page-loader {
       display: flex;
       flex-direction: column;
@@ -76,7 +75,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Garante que o conteúdo NUNCA apareça antes da detecção do IP */
     #main-content {
       display: none;
       max-width: 900px;
@@ -234,13 +232,12 @@
 </head>
 <body>
 
-  <!-- Spinner visível por padrão enquanto analisa o IP -->
+  <!-- Spinner de carregamento -->
   <div id="page-loader">
     <div class="spinner"></div>
-    <span id="loader-text">Carregando documentação...</span>
+    <span id="loader-text">Loading documentation...</span>
   </div>
 
-  <!-- Container principal bloqueado com style="display: none;" para não vazar tela -->
   <div class="container" id="main-content" style="display: none;">
     <header>
       <span class="badge" id="main-badge">Documento Oficial</span>
@@ -254,9 +251,7 @@
       <button class="tab-btn" data-lang="es" onclick="switchLang('es')">Español</button>
     </nav>
 
-    <!-- ========================================================
-         1. PORTUGUÊS (BRASIL)
-         ======================================================== -->
+    <!-- 1. PORTUGUÊS (BRASIL) -->
     <article id="panel-pt" class="content-panel">
       <h2>TERMOS DE USO E USO RESPONSÁVEL</h2>
       <p>Ao utilizar este aplicativo, você declara que leu, compreendeu e concorda com estes Termos de Uso. Caso não concorde com qualquer condição abaixo, não utilize o aplicativo.</p>
@@ -352,9 +347,7 @@
       <p>Esta política poderá ser atualizada para refletir alterações técnicas, legais ou operacionais. A data da última atualização será indicada neste documento.</p>
     </article>
 
-    <!-- ========================================================
-         2. ENGLISH (UNITED STATES & INTERNATIONAL)
-         ======================================================== -->
+    <!-- 2. ENGLISH (UNITED STATES & INTERNATIONAL) -->
     <article id="panel-en" class="content-panel">
       <h2>TERMS OF USE AND RESPONSIBLE USE</h2>
       <p>By using this application, you acknowledge that you have read, understood, and agreed to these Terms of Use. If you do not agree with any condition below, do not use the application.</p>
@@ -453,9 +446,7 @@
       <p>This policy may be updated to reflect technical, legal or operational changes. The last updated date will be shown in this document.</p>
     </article>
 
-    <!-- ========================================================
-         3. ESPAÑOL (ESPAÑA & LATINOAMÉRICA)
-         ======================================================== -->
+    <!-- 3. ESPAÑOL (ESPAÑA & LATINOAMÉRICA) -->
     <article id="panel-es" class="content-panel">
       <h2>TÉRMINOS DE USO Y USO RESPONSABLE</h2>
       <p>Al utilizar esta aplicación, declara haber leído, comprendido y aceptado estos Términos de Uso. En caso de desacuerdo, absténgase de utilizar la aplicación.</p>
@@ -558,7 +549,6 @@
   </div>
 
   <script>
-    // Dicionário de títulos e textos do cabeçalho
     const headerTranslations = {
       pt: {
         badge: "Documento Oficial",
@@ -576,7 +566,7 @@
         badge: "Documento Oficial",
         title: "Términos y Privacidad",
         date: "Última Actualización: 11/09/2026",
-        docTitle: "Términos de Uso y Política de Privacidad"
+        docTitle: "Términos de Uso y Política de Privacidade"
       }
     };
 
@@ -619,105 +609,46 @@
     }
 
     /**
-     * Lê a região e idioma selecionados no sistema do Android
-     * Exemplo de retorno: locale: "pt-BR", country: "BR", lang: "pt"
+     * Deteção estrita baseada no parâmetro da URL enviado pelo telemóvel
+     * ou no idioma nativo do sistema do dispositivo (SEM QUALQUER CONSULTA A IP)
      */
-    function getAndroidSystemLocale() {
-      try {
-        // Tenta pegar a região exata resolvida pelo sistema do dispositivo
-        const resolved = Intl.DateTimeFormat().resolvedOptions().locale; // ex: "pt-BR", "es-ES", "en-US"
-        
-        let country = '';
-        let language = '';
+    function resolveDeviceLanguage() {
+      // 1. Prioridade: Parâmetro ?lang= enviado pelo WebView do telemóvel
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramLang = (urlParams.get('lang') || '').toLowerCase().trim();
 
-        if (typeof Intl.Locale !== 'undefined') {
-          const localeObj = new Intl.Locale(resolved);
-          country = (localeObj.region || '').toUpperCase();
-          language = (localeObj.language || '').toLowerCase();
-        } else {
-          const parts = resolved.split('-');
-          language = (parts[0] || '').toLowerCase();
-          country = (parts[1] || '').toUpperCase();
-        }
-
-        // Se o resolvedOptions não trouxe o país, verifica navigator.languages
-        if (!country) {
-          const langs = navigator.languages || [navigator.language || ''];
-          for (const l of langs) {
-            if (l.includes('-')) {
-              country = l.split('-')[1].toUpperCase();
-              break;
-            }
-          }
-        }
-
-        return { country, language };
-      } catch (err) {
-        return { country: '', language: '' };
+      if (paramLang === 'pt' || paramLang === 'es' || paramLang === 'en') {
+        return paramLang;
       }
+
+      // 2. Fallback: Lê as variáveis de sistema locais do dispositivo
+      try {
+        const resolved = Intl.DateTimeFormat().resolvedOptions().locale.toLowerCase();
+        const parts = resolved.split(/[-_]/);
+        const lang = parts[0] || '';
+        const country = parts[1] || '';
+
+        // Regra Brasil
+        if (country === 'br' || lang === 'pt') return 'pt';
+
+        // Regra Espanha
+        if (country === 'es' || (lang === 'es' && (country === 'es' || !country))) return 'es';
+      } catch (_) {}
+
+      // 3. Regra Resto do mundo
+      return 'en';
     }
 
-    /**
-     * Mapeia um código de país (BR, ES, US, etc.) para o idioma do documento
-     */
-    function mapCountryToLang(countryCode) {
-      if (!countryCode) return null;
-      const c = countryCode.toUpperCase();
-      if (c === 'BR') return 'pt';
-      if (c === 'ES') return 'es';
-      return 'en'; // EUA ('US') e resto do mundo
-    }
-
-    // Fluxo principal combinando Detecção por IP + Leitura do Android
-    async function detectLanguageAndRegion() {
-      let chosenLang = null;
-
-      // 1. Lê os dados configurados no próprio Android
-      const androidInfo = getAndroidSystemLocale();
-
-      // 2. Consulta a localização do IP (com timeout de 2s para não travar a tela)
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
-
-        const res = await fetch('https://ipwho.is/', { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.success !== false) {
-            const ipCountry = (data.country_code || '').toUpperCase();
-            chosenLang = mapCountryToLang(ipCountry);
-          }
-        }
-      } catch (e) {
-        // Falha de rede ou timeout
-      }
-
-      // 3. Se a busca por IP não retornou ou falhou, usa a região/idioma do Android
-      if (!chosenLang) {
-        // Primeiro tenta pela região geográfica selecionada no Android
-        if (androidInfo.country) {
-          chosenLang = mapCountryToLang(androidInfo.country);
-        }
-
-        // Se ainda não definiu, decide pelo idioma do Android
-        if (!chosenLang) {
-          if (androidInfo.language === 'pt') chosenLang = 'pt';
-          else if (androidInfo.language === 'es') chosenLang = 'es';
-          else chosenLang = 'en';
-        }
-      }
-
-      // Aplica o idioma escolhido e exibe a página
-      switchLang(chosenLang);
+    function initPage() {
+      const targetLang = resolveDeviceLanguage();
+      switchLang(targetLang);
       revealContent();
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', detectLanguageAndRegion);
+      document.addEventListener('DOMContentLoaded', initPage);
     } else {
-      detectLanguageAndRegion();
+      initPage();
     }
   </script>
 </body>
